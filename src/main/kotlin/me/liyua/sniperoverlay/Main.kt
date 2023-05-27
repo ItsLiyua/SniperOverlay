@@ -1,5 +1,8 @@
 package me.liyua.sniperoverlay
 
+import me.liyua.sniperoverlay.log.LogReader
+import me.liyua.sniperoverlay.log.listeners.JoinListener
+import me.liyua.sniperoverlay.log.listeners.QuitListener
 import java.io.File
 import java.io.FileInputStream
 import java.util.logging.Logger
@@ -9,6 +12,8 @@ import kotlin.system.exitProcess
 lateinit var logger: Logger
 lateinit var mcLogFile: File
 lateinit var blackListFile: File
+lateinit var blacklist: Blacklist
+val inGame = mutableListOf<String>()
 
 fun main(args: Array<String>) {
     logger = Logger.getLogger("main")
@@ -23,7 +28,13 @@ fun main(args: Array<String>) {
     blackListFile = Path(args[1]).toFile()
     logger.info("Blacklist File: ${blackListFile.absolutePath}")
 
-    ReaderThread(FileInputStream(mcLogFile)){ println(it) }.start()
+    blacklist = Blacklist(blackListFile)
+
+    val logReader = LogReader(FileInputStream(mcLogFile))
+    // logReader.listeners.add(PrintListener)
+    logReader.listeners.add(JoinListener)
+    logReader.listeners.add(QuitListener)
+    logReader.start()
 
     Thread.sleep(100000)
 }

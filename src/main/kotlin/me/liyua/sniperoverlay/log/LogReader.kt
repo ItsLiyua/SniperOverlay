@@ -1,8 +1,10 @@
-package me.liyua.sniperoverlay
+package me.liyua.sniperoverlay.log
 
 import java.io.InputStream
 
-class ReaderThread(val reader: InputStream, val onRead: (String) -> Unit) : Thread() {
+class LogReader(val reader: InputStream) : Thread() {
+
+    val listeners = mutableListOf<LogListener>()
 
     var running = true
         private set
@@ -16,7 +18,11 @@ class ReaderThread(val reader: InputStream, val onRead: (String) -> Unit) : Thre
             if (this.reader.available() > 0) {
                 var s = ""
                 while (this.reader.available() > 0) s += this.reader.read().toChar().toString()
-                this.onRead(s)
+                s.split("\n").forEach { line ->
+                    this.listeners
+                        .filter { it.accept(line) }
+                        .forEach { it.apply(line) }
+                }
             } else sleep(100)
         }
         this.reader.close()
