@@ -28,8 +28,6 @@ class Blacklist(val file: File) {
             i++
         }
 
-        println(this.names)
-
         logger.info("Loaded $i names from blacklist.")
     }
 

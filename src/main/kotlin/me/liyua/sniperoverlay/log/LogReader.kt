@@ -14,6 +14,9 @@ class LogReader(val reader: InputStream) : Thread() {
     }
 
     override fun run() {
+        // Clear everything that was logged to the file before the app was started.
+        while (this.reader.available() > 0) this.reader.read()
+
         while (running) {
             if (this.reader.available() > 0) {
                 var s = ""
