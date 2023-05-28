@@ -1,13 +1,17 @@
 package me.liyua.sniperoverlay
 
+import me.liyua.sniperoverlay.gui.Window
 import me.liyua.sniperoverlay.log.LogReader
 import me.liyua.sniperoverlay.log.listeners.JoinListener
 import me.liyua.sniperoverlay.log.listeners.LobbyListener
 import me.liyua.sniperoverlay.log.listeners.QuitListener
 import me.liyua.sniperoverlay.log.listeners.WhoListener
+import java.awt.Color
+import java.awt.Dimension
 import java.io.File
 import java.io.FileInputStream
 import java.util.logging.Logger
+import javax.swing.JFrame
 import kotlin.io.path.Path
 import kotlin.system.exitProcess
 
@@ -39,9 +43,11 @@ fun main(args: Array<String>) {
     logReader.listeners.add(LobbyListener)
     logReader.listeners.add(WhoListener)
     logReader.start()
+
+    Window.show()
 }
 
-fun add(name:String){
+fun add(name: String) {
     inGame.add(name)
     if (blacklist.has(name)) {
         logger.warning("$name is on the blacklist! Reason: ${blacklist.reason(name)}")
