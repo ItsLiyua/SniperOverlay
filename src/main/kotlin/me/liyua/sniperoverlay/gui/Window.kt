@@ -15,6 +15,7 @@ object Window {
         this.jf.background = Color(0f, 0f, 0f, 0.3f)
         this.jf.isResizable = false
         this.jf.isAlwaysOnTop = true
+        this.jf.contentPane.add(Draw)
     }
 
     fun show() {
