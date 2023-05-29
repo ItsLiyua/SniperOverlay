@@ -44,11 +44,16 @@ fun main(args: Array<String>) {
     logReader.listeners.add(WhoListener)
     logReader.start()
 
+    add("Liyua")
+    add("SomeName")
+    add("SomeName2")
+
     Window.show()
 }
 
 fun add(name: String) {
     inGame.add(name)
+    Window.update()
     if (blacklist.has(name)) {
         logger.warning("$name is on the blacklist! Reason: ${blacklist.reason(name)}")
     }
